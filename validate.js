@@ -20,9 +20,13 @@ function validateFile(filePath){
   var keys;
   data.features.forEach(function(feature){
     keys = Object.keys(feature.properties);
-    if (!_.isEqual(keys, oldKeys)){
-      oldKeys = keys;
-      oldKeys = oldKeys.sort();
+    if (_.difference(keys, oldKeys).length){
+      if (!oldKeys.length){ // this is the first time
+        oldKeys = keys;
+      }
+      else {
+        console.warn('>>>', filePath, ' properties are not all the same');
+      }
     }
   });
   return _.difference(oldKeys, expectedKeys);
